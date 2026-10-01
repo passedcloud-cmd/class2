@@ -1,0 +1,58 @@
+## VSC에 클로드 코드 설치
+
+Mac/Linux(또는 Git Bash): curl -fsSL https://claude.ai/install.sh | bash
+
+PowerShell 터미널: irm https://claude.ai/install.ps1 | iex을 입력해서 설치
+
+### 만약 command not found가 발생한다면
+설치가 제대로 완료되었는데도 Git Bash 터미널에서 command not found가 뜬다면 Windows PowerShell이 프로그램을 설치한 경로를 Git Bash가 아직 인지하지 못하고 있기 때문
+
+#### 해결 방법 (Git Bash 전용)
+현재 문제가 발생한 VS Code의 Bash 터미널로 돌아옵니다.
+아래 명령어를 그대로 복사해서 Bash 터미널에 붙여넣고 엔터를 누릅니다. (사용자 계정 경로를 자동으로 연결해 주는 명령어입니다.)
+-bash-
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bash_profile && source ~/.bash_profile
+
+Windows의 시스템 환경 변수(Path) 메커니즘과 Linux 기반인 Git Bash의 환경 변수(PATH) 메커니즘이 서로 완벽하게 동기화되지 않아 발생하는 일시적인 현상입니다. 위의 명령어를 통해 Git Bash에게 *"앞으로 명령어를 찾을 때 클로드가 설치된 윈도우 폴더(.local/bin)도 같이 뒤져봐!"*라고 영구적으로 길을 알려준 것입니다.
+
+-bash-
+claude
+
+
+
+## 클로드 코드 삭제
+### 1. Claude Code 프로그램 삭제하기
+
+터미널에 아래 명령어를 입력합니다.
+-bash-
+claude uninstall
+
+#### (명령어가 실행되지 않을 경우) 수동 바이너리 삭제
+만약 위 명령어가 작동하지 않는다면 Git Bash 터미널에서 실행 파일(claude.exe) 경로를 직접 삭제해 줍니다.
+
+-bash-
+rm -f ~/.local/bin/claude
+
+### 2. 잔여 캐시 및 설정 파일 완전 삭제 (선택 사항)
+프로그램을 지워도 로그인 토큰, 대화 기록, 설정 파일 정보 등은 시스템에 그대로 남습니다. 이를 모두 지워 초기화하려면 Git Bash 터미널에 아래 두 줄을 차례로 입력해 주세요
+
+-bash-
+rm -rf ~/.claude
+rm -rf ~/.cache/claude-code
+
+### 3. 앞서 추가했던 환경 변수 경로 복구 (깔끔한 마무리)
+이전 질문에서 Git Bash에 추가해 두었던 경로 검색 설정(export PATH...)까지 마저 지우고 싶다면 아래 명령어를 실행하세요.
+
+-bash-
+sed -i '/\.local\/bin/d' ~/.bash_profile && source ~/.bash_profile
+
+모든 과정이 끝나고 터미널에 다시 claude를 입력했을 때 bash: claude: command not found가 출력된다면 정상적으로 완전히 삭제된 것입니다.
+
+
+
+## VSC에서 클로드 코드로그아웃 방법
+/logout 
+claude 실행 중인 창에서 /logout 을 입력하고 엔터를 칩니다. 로그아웃이 완료되었다는 메시지가 나오는지 확인하세요.
+
+(보험용) 인증 파일 직접 삭제
+만약 /logout이 안 되거나 명령어 에러가 나면, 인증 정보가 저장된 폴더/파일을 직접 지우면 확실합니다. 홈 폴더(C:\Users\사용자명)에 있는 .claude 폴더와 .claude.json 파일을 삭제하면 됩니다. 이건 로그아웃과 비슷한 효과를 냅니다 — 다음에 claude를 실행하려면 다시 로그인해야 해요.
