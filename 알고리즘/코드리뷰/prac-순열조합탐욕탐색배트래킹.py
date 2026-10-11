@@ -1,6 +1,6 @@
-###############
-## 순열 ##########
-###############
+##############
+# 순열 ##########
+##############
 # def permutation(selected, remaining):
 #     # 기저 조건
 #     if not remaining:
@@ -15,6 +15,19 @@
 # permutation([], [1,2,3])
 
 
+# # r개만 뽑고 싶다면 
+# def permutation(selected, remaining, r):
+#     # 기저 조건: r개를 뽑았으면 출력
+#     if len(selected) == r:
+#         print(selected)
+#         return
+#     # 재귀 단계
+#     for i in range(len(remaining)):
+#         pick = remaining[i]
+#         next_remaining = remaining[:i] + remaining[i+1:]
+#         permutation(selected + [pick], next_remaining, r)
+
+# permutation([], [1, 2, 3], 2)
 
 # import itertools ############################
 # data_list = ['a','b','c','d']
