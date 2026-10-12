@@ -1,0 +1,155 @@
+가상환경 생성
+`python -m venv venv`
+
+python -m venv / venv(가상환경의 이름)
+
+`python -V`
+Python 3.11.9 버전을 깔 것
+3.12면 쟝고가 최신 버전이 깔리는데 그게 아직 안정화되지 않음
+
+`source venv/Scripts/activate`
+
+가상환경은 이동의 개념이 아니라 on/off 개념
+프로젝트 당 가상환경은 1개
+
+'cd -'
+
+가상환경 종료
+`deactivate`
+ 터미널 종료해도 가상환경 종료됨
+
+패키지, 라이브러리륻 다운받으면 venv 파일이 무거워짐
+git에 올리지 않음
+gitignore에 등록
+
+`pip list`
+가상환경에 등록된 패키지 보기
+
+`pip install requests`
+의존형 패키지
+requests를 설치했는데 다른 패키지들도 같이 설치가 됨. 다른 패키지들도 필요하기 때문
+
+`pip freeze > rquirements.txt`
+왼쪽 결과를 오른쪽에 적겠다.
+필요할 때마다 pip freeze로 txt 업데이트
+
+새로운 가상환경에서 requirements.txt에 적힌 패키지 설치
+`pip install -r requirements.txt`
+
+만약 파이썬이 3.11버전이 아니라 3.12버전이라면
+`pip install django~=5.2.0`
+쟝고 버전 명시
+
+
+`django-admin startproject firstpjt .`
+
+django-admin startproject / firstpjt / .
+쟝고 프로젝트 시작할거임 / 프로젝트이름 / 현재 디렉토리에
+
+`python manage.py runserver`
+manage.py 뒤에 명령어를 적어서 실행시킬 수 있음
+manage.py가 있는 경로에서 명령어를 적어야 함
+로컬 서버를 켰음 : http://127.0.0.1:8000/
+ctrl+c누르면 서버 꺼짐
+
+MVC 디자인 패턴
+model: 데이터 및 비즈니스 로직을 처리
+view: 사용자에게 보이는 화면을 담당
+controller: 사용자의 입력을 받아 model과 view를 제어
+시각적 요소와 뒤에서 실행되는 로직을 서로 영향 없이, 독립적이고 쉽게 유지 보수할 수 있는 애플리케이션을 만들기 위함
+
+MTV 디자인 패턴
+model
+template 
+view
+기존 MVC 패턴과 동일하나 단순히 명칭을 다르게 함
+view -> template
+controller -> view
+
+1. 앱 생성
+`python manage.py startapp articles`
+
+python manage.py startapp / articles
+					앱의 이름
+					앱의 이름은 복수형으로 지정하는 것을 권장함
+
+2. 앱 등록
+반드시 앱을 생성(1)한 후에 등록(2)을 해야 함
+firstpjt 폴더에 있는 settings.py에 추가
+33줄의 INSTALLED_APPS에 'articles'추가
+새로 추가한 것들은 위쪽에. (아래쪽에 둔다고 해서 문제가 일어나진 않음)
+INSTALLED_APPS = [
+    'articles',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+]
+
+
+프로젝트 구조
+- settings.py
+프로젝트의 모든 설정을 관리
+
+- urls.py
+요청 들어오는 URL에 따라 이에 해당하는 views를 연결
+
+앱 구조
+-admin.py
+관리자용 페이지 설정
+
+-models.py
+중요! 
+DB와 관련된 model을 정의
+MTV 패턴의 M
+
+-views.py
+중요!
+HTTP 요청을 처리하고 해당 요청에 대한 응답을 반환. url, model, template와 연동
+MTV 패턴의 V
+
+쟝고는 template은 기본적으로 제공하지 않음.
+태생적으로 백엔드이기 때문에.
+내가 만들어야 함
+
+프로젝트와 앱이 같은 깊이의 경로에 생김. 쟝고가 원래 그런 구조라 함.
+
+
+
+firstpjt에 urls.py있음
+마지막 부분에 
+urlpatterns = [
+    path('admin/', admin.site.urls),
+]
+가 있음. admin/이라는 경로에 들어가면 로그인 페이지가 나옴
+http://127.0.0.1:8000/admin/
+
+urls.py에 `from articles import views` 입력 (articles 패키지에서 views 모듈을 가져옴)
+urlpatterns에 `path('articles/', views.index),` 추가
+ 
+articles.의 views.py에서 함수를 만들어감
+def index(request):
+	return render(request, 'articles/index.html')
+# 함수의 첫 번째 매개인자는 request임. 그렇게 설계가 됨
+
+
+articles에 "templates"라는 폴더를 만들어야 함
+반드시 templates라는 폴더명이어야 함.
+app폴더 / template 까지는 기본 경로
+template 안에 articles라는 폴더 생성
+articles 안에 index.html 파일 생성
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Main document</title>
+</head>
+<body>
+  <h1>Hello, Django!</h1>
+  <p>sucess</p>
+</body>
+</html>
