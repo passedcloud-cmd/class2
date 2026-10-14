@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+  </head>
+  <body>
+    <a href="{% url "articles:index" %}">index</a>
+    <a href="{% url "articles:dinner" %}">dinner</a>
+    <a href="{% url "articles:search" %}">search</a>
+    <a href="{% url "articles:throw" %}">throw</a>
+    <a href="{% url "pages:index" %}">두 번째 앱의 메인 페이지</a>
+    {% block content %}
+    {% endblock content %}
+
+  </body>
+</html>

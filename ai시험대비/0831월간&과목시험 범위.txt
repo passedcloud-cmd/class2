@@ -1,0 +1,84 @@
+1-1 데이터-EDA
+1-2 MLP
+2-1 토큰화-임베딩
+2-2 합성 데이터
+3-1 CNN-전이학습
+3-2 이미지 파운데이션 모델
+4-1 RAG
+4-2 Agent
+5-1 PEET
+5-2 Quantization
+
+
+### 2차 월멸평가 - 파이썬 코드 작성과 서술형 문항
+데이터 생성을 위한 프롬프트 설계
+탐색적 데이터 분석 및 상관관계 해석
+RAG 워크플로 이해 및 구현
+
+### 3차 과목 평가 - 60문항 출제 
+회귀식과 오차항
+K-means와 계층적 군집
+비지도학습 사례
+재현율 계산
+회귀 문제
+학습률과 수렴
+상관관계와 다중공선성
+정밀도 계산
+분류 문제
+비선형 활성화 함수
+-10
+RLHF 강화학습
+RLHF 학습 절차
+경사하강법 갱신 방향
+원-핫 인코딩의 한계
+RNN 순환 구조
+1×1 Convolution 연산량
+CNN·FC 파라미터 계산
+문장 임베딩과 코사인 유사도
+텍스트 파운데이션 모델
+LLM Agent의 특성
+-20
+지시 학습 데이터
+1×1 Convolution의 특징
+Zero-shot CoT
+AI와 AI Agent
+Quantization의 특징
+프롬프트 디자인
+Knowledge Distillation
+멀티모달 비디오 생성
+CBOW와 Skip-gram
+RNN 기울기 소실
+-30
+LSTM 상태 구조
+사전학습과 파인튜닝
+Max Pooling
+CNN 수용영역
+Feature Map 메모리
+파운데이션 모델 서비스 개발
+VLM 학습 절차
+문서 이해 VLM
+Small VLM
+RAG
+-40
+LLM-as-Judge 평가 편향
+단일 태스크 파인튜닝
+선형회귀 계수 해석
+Tool Learning
+다중 에이전트 시스템
+파인튜닝과 Instruction-tuning
+RLHF 학습 파이프라인
+Few-shot CoT
+배포 환경별 경량화 전략
+저비트 Quantization
+-50
+Teacher–Student 지식 증류
+모델 경량화 Trade-off
+OOD와 Adaptive Sensing
+AI 스케일링과 Physical AI
+CNN Inductive Bias
+ViT Positional Embedding
+AI Agent 동작
+Distribution Shift
+AI Agent의 Tool 활용
+도메인 특화 AI
+-60
