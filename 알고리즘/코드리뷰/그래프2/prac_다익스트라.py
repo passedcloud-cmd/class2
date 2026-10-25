@@ -11,7 +11,7 @@
 
 # # 5 8
 # # 1
-# # 1 2 4  
+# # 1 2 4   
 # # 1 3 1
 # # 3 2 2
 # # 2 4 1
@@ -52,37 +52,39 @@
 
 
 
-# import heapq
-# heap = [5, 3, 8, 4, 1, 2]
-# heapq.heapify(heap)
+import heapq
+heap = [5, 3, 8, 4, 1, 2]
+heapq.heapify(heap) # 첫 번째 원소(heap[0])는 항상 가장 작은 값이 위치
+# heappop으로 맨 앞(가장 작은 값)을 꺼내면, heapq가 나머지를 자동으로 정리해서 그다음으로 작은 값이 heap[0]에 와. # append나 pop을 쓰면 정리가 안 돼서 맨 앞이 가장 작은 값이라는 보장이 깨져.
+print(heap)
 
-# small_first = []
-# while heap:
-#     pop_reuslt = heapq.heappop(heap)
-#     small_first.append(pop_reuslt)
+small_first = []
+while heap:
+    pop_reuslt = heapq.heappop(heap) # heapq.heappop()은 가장 작은 값을 꺼냄
+    small_first.append(pop_reuslt)
+print(f'작은 순: {small_first}')
+# -----------------------------
+max_heap = []
+numbers =[5, 3, 8, 4, 1, 2]
+for number in numbers:
+    heapq.heappush(max_heap, -number)
 
-# max_heap = []
-# numbers =[5, 3, 8, 4, 1, 2]
-# for number in numbers:
-#     heapq.heappush(max_heap, -number)
+big_first = []
+while max_heap:
+    pop_reuslt = -heapq.heappop(max_heap)
+    big_first.append(pop_reuslt)
+print(f'큰 순: {big_first}')
 
-# big_first = []
-# while max_heap:
-#     pop_reuslt = -heapq.heappop(max_heap)
-#     big_first.append(pop_reuslt)
 
-# print(small_first)
-# print(big_first)
-
-# patients = [('김철수', 2), ('이영희', 5), ('박민수', 3), ('최지우', 5), ('정하늘', 1)]
-# waiting = []
-# for order, (name, level) in enumerate(patients):
-#     heapq.heappush(waiting, (-level, order, name)) # 첫 번재 요소를 기준으로 삼음. 첫 번재 요소가 같으면 그 다음 요소 비교
-# call_order = []
-# while waiting:
-#     _, _, name = heapq.heappop(waiting)
-#     call_order.append(name)
-# print(call_order)
+patients = [('김철수', 2), ('이영희', 5), ('박민수', 3), ('최지우', 5), ('정하늘', 1)]
+waiting = []
+for order, (name, level) in enumerate(patients):
+    heapq.heappush(waiting, (-level, order, name)) # 첫 번재 요소를 기준으로 삼음. 첫 번재 요소가 같으면 그 다음 요소 비교
+call_order = []
+while waiting:
+    _, _, name = heapq.heappop(waiting)
+    call_order.append(name)
+print(call_order)
 
 
 
@@ -100,38 +102,38 @@
 # 00001
 # 19999
 # 11110
-T = int(input())
-for test_case in range(1, T+1):
-    N = int(input())
-    arr = [list(map(int,input())) for _ in range(N)] 
-    #print(arr)
+# T = int(input())
+# for test_case in range(1, T+1):
+#     N = int(input())
+#     arr = [list(map(int,input())) for _ in range(N)] 
+#     #print(arr)
 
-    import heapq
-    INF = float('inf')
-    dr = [-1,1,0,0]
-    dc = [0,0,-1,1]
+#     import heapq
+#     INF = float('inf')
+#     dr = [-1,1,0,0]
+#     dc = [0,0,-1,1]
 
-    def min_cost(grid, n):
-        distance = [[INF] * n for _ in range(n)]
-        distance[0][0] = 0 # 시작점은 0
-        heap = [(0,0,0)] # 누적거리, 행, 열
+#     def min_cost(grid, n):
+#         distance = [[INF] * n for _ in range(n)]
+#         distance[0][0] = 0 # 시작점은 0
+#         heap = [(0,0,0)] # 누적거리, 행, 열
 
-        while heap:
-            current_dist, row, col = heapq.heappop(heap)
-            if distance[row][col] < current_dist:
-                continue
+#         while heap:
+#             current_dist, row, col = heapq.heappop(heap)
+#             if distance[row][col] < current_dist:
+#                 continue
 
-            for k in range(4):
-                nr = row + dr[k]
-                nc = col + dc[k]
+#             for k in range(4):
+#                 nr = row + dr[k]
+#                 nc = col + dc[k]
 
-                if 0<=nr<n and 0 <= nc <n:
-                    new_dist = current_dist + grid[nr][nc]
+#                 if 0<=nr<n and 0 <= nc <n:
+#                     new_dist = current_dist + grid[nr][nc]
 
-                    if new_dist < distance[nr][nc]:
-                        distance[nr][nc] = new_dist
-                        heapq.heappush(heap, (new_dist, nr, nc))
-        print(distance)
-        return distance[n-1][n-1]
+#                     if new_dist < distance[nr][nc]:
+#                         distance[nr][nc] = new_dist
+#                         heapq.heappush(heap, (new_dist, nr, nc))
+#         print(distance)
+#         return distance[n-1][n-1]
 
-    print(f'#{test_case} {min_cost(arr, N)}') #1 5, #2 9
+#     print(f'#{test_case} {min_cost(arr, N)}') #1 5, #2 9
