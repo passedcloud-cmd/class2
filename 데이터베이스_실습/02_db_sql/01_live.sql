@@ -1,11 +1,14 @@
--- Active: 1793596242397@@127.0.0.1@3306
+-- Active: 1793608809772@@127.0.0.1@3306
 CREATE TABLE examples(
   ExamId INTEGER PRIMARY KEY AUTOINCREMENT,
   LastName VARCHAR(50) NOT NULL,
   FirstName VARCHAR(50) NOT NULL
 );
+-- 데이터 타입 종류: NULL, TEXT, INTEGER, REAL(부동소수점), DATE, BLOB(이미지, 동영상, 문서 등 바이너리 데이터)
 
-PRAGMA table_info('examples')
+PRAGMA table_info('examples') -- 데이블을 바로 볼 수 있는 명령어
+
+-----------------------------------
 
 ALTER TABLE
   examples
