@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ person.username }}님의 프로필</h1>
+
+<div>
+  <div>
+    {% comment %} 팔로우 스탯{% endcomment %}
+  </div>
+  {% comment "나를 팔로우 할 순 없음" %}{% endcomment %}
+  {% if request.user != person %}
+    <div>
+      <form action="{% url 'accounts:follow' person.pk %}" method="POST">
+        {% csrf_token %}
+        {% if request.user in person.followers.alll %}
+          <input type="submint" value="Unfollow">
+        {% else %}
+          <input type="submit" value="follow">
+        {% endif %}
+      </form>
+
+    </div>
+  {% endif %}
+</div>
+
+
+
+
+
+
+
+
+<hr>
+<h2>{{ person.username }}가 작성한 게시글</h2>
+{% comment %} person이 작성한 댓글 역참조 {% endcomment %}
+{% for article in person.article_set.all %} 
+  <div>{{ article.title }}</div>
+{% endfor %}
+<hr>
+<h2>{{ person.username }}가 작성한 게시글</h2>
+{% for comment in person.comment_sel.all %}
+  <div>{{ comment.content}}</div>
+{% endfor %}
+<hr>
+<h2>{{ person.username }}가 좋아요한 게시글</h2>
+{% for article in person.like_articles.all %}
+  <div>{{ article.title }}</div>
+{% endfor %}
+<a href="{% url 'articles:index' %}"></a>
+{% endblock content %}
+
+
