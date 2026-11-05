@@ -43,37 +43,39 @@
 
 
 
-##### dfs 스택 #####
+# #### dfs 스택 #####
 
-V, E = 7, 8
-edge_input = [1, 2, 1, 3, 2, 4, 2, 5, 4, 6, 5, 6, 6, 7, 3, 7]
+# V, E = 7, 8
+# edge_input = [1, 2, 1, 3, 2, 4, 2, 5, 4, 6, 5, 6, 6, 7, 3, 7]
 
-adj_list = [[] for _ in range(V+1)]
-for i in range(E):
-    node1, node2 = edge_input[i*2], edge_input[i*2 + 1]
-    adj_list[node1].append(node2)
-    adj_list[node2].append(node1)
-for i in range(1, V+1):
-    adj_list[i].sort(reverse=True) # 숫자가 작은 노드 먼저 방문하기 위해 내림차순 정렬
+# adj_list = [[] for _ in range(V+1)]
+# for i in range(E):
+#     node1, node2 = edge_input[i*2], edge_input[i*2 + 1]
+#     adj_list[node1].append(node2)
+#     adj_list[node2].append(node1)
+# for i in range(1, V+1):
+#     adj_list[i].sort(reverse=True) # 숫자가 작은 노드 먼저 방문하기 위해 내림차순 정렬
 
-visited = [False] * (V + 1)
-path = []
-stack = []
+# visited = [False] * (V + 1)
+# path = []
+# stack = []
 
-def adj_list_stack_pop(start_node):
-    stack.append(start_node)
+# # DFS (스택): 꺼낼 때 방문 처리 → 중복으로 넣는 걸 허용. 가장 최근에 들어간 게 먼저 나오도록 함.
+# # 나올 때(pop 할 때) 방문 처리
+# def adj_list_stack_pop(start_node):
+#     stack.append(start_node)
 
-    while stack:
-        current_node = stack.pop()
-        if not visited[current_node]:
-            visited[current_node] = True
-            path.append(current_node)
-            for next_node in adj_list[current_node]:
-                if not visited[next_node]:
-                    stack.append(next_node)        
+#     while stack:
+#         current_node = stack.pop()
+#         if not visited[current_node]:
+#             visited[current_node] = True
+#             path.append(current_node)
+#             for next_node in adj_list[current_node]:
+#                 if not visited[next_node]:
+#                     stack.append(next_node)        
 
-adj_list_stack_pop(1)
-print(f'dfs 스택 결과: {''.join(map(str, path))}') #1246573
+# adj_list_stack_pop(1)
+# print(f'dfs 스택 결과: {''.join(map(str, path))}') #1246573
 
 
 
