@@ -7,6 +7,7 @@ for test_case in range(1, T+1):
     # 공장별 생산 비용
     V = [list(map(int, input().split())) for _ in range(N)]
 
+<<<<<<< Updated upstream
 # ######################################
 # ######### 순열 확인 ###################
 #     visited = [0] * N # 제품별로 경우의 수 확인 
@@ -64,6 +65,39 @@ for test_case in range(1, T+1):
     search(0, 0)
     print(f'#{test_case} {min_sum}')
 
+=======
+    visited = [False] * N
+    min_cost = float('inf')
+    picked = []
+    def search(n, cost):
+        global min_cost
+        # 가지 치기 
+        if cost>=min_cost:
+            return
+
+        # 종료 조건
+        if n == N:
+            print(picked)
+            if min_cost > cost:
+                min_cost = cost
+            return min_cost
+
+        # 순열
+        for i in range(N):
+            # 방문한 적이 없다면
+            if not visited[i]:
+                visited[i] = True
+                # i번째 공장에서 n번 상품을 만드는 경우 
+                picked.append(V[n][i])
+                search(n+1, cost+V[n][i])
+                # i번째 공장에서 n번 상품을 만들지 않은 경우
+                picked.pop()
+                visited[i] = False
+
+
+    search(0,0)
+    print(min_cost)
+>>>>>>> Stashed changes
 
 
 

@@ -14,7 +14,10 @@ for test_case in range(1, T+1):
     N = increase_num
     print(f'#{test_case} {N}')
 
+    def my_sum(n):
+        return n*(n+1)/2
 
+<<<<<<< Updated upstream
 ############################
 ##### 다른 풀이 방법 #########
     def prefix_sum(n):
@@ -33,6 +36,18 @@ for test_case in range(1, T+1):
 
     print(f'#{test_case} {low}')
     print(f'#{test_case} {high}')
+=======
+    low = 1
+    high = M
+    while low < high:
+        mid = (low + high) // 2
+        if my_sum(mid) >= M:
+            high = mid
+        if my_sum(mid) < M:
+            low = mid+1
+
+    print(high)
+>>>>>>> Stashed changes
 
 
 
