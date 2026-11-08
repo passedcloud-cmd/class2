@@ -1,0 +1,94 @@
+- 장고 ORM(Django ORM)은 객체 관계 매핑(Object-Relational Mapping
+- 디자인 패턴: 반복되는 설계 문제에 대한 검증된 재사용 가능한 해결책
+- 첫 번째 인자로 요청 객체를 받는 게 규칙이고, 이름 request는 관례다. 다른 이름을 써도 동작은 한다.
+- settings.py의 INSTALLED_APPS에 'articles'를 먼저 적고 나서 python manage.py startapp articles를 실행하면? manage.py가 설정을 읽으며 등록된 앱을 불러오는데 아직 없는 모듈이라 ModuleNotFoundError. 순서는 반드시 생성 → 등록.
+
+- Django Template System: HTML과 파이썬 코드를 분리해 작성하는 것이 목적. 
+- DTL(Django Template Language) 문법 이라고 함. 
+- {# #}는 한 줄 주석. 여러 줄 주석은 {% comment %} ... {% endcomment %}.
+- 앱 폴더 밖, 프로젝트 최상위의 templates/ 폴더를 추가 템플릿 경로로 등록하는 설정은? TEMPLATES 설정 안의 DIRS. 'DIRS': [BASE_DIR / 'templates']
+- {% endblock content %}처럼 endblock 뒤에 이름을 적는 건 가독성을 위한 선택 사항이다.
+- <form> 태그의 action 속성을 생략했을 때 데이터가 전송되는 곳은? 현재 페이지의 URL
+- HTML form 제출 시 서버가 사용자 입력값을 찾는 key로 쓰이는 input 속성은? 서버는 name 속성 값으로만 입력 데이터에 접근한다. id는 label과 연결하는 HTML 식별자일 뿐.
+- GET으로 온 데이터는 request.GET(QueryDict)에 담기고, key는 input의 name. 예시: request.GET.get('message')
+- message 키가 없을 때 request.GET.get('message')와 request.GET['message']의 동작으로 옳은 것은? get()은 None을 반환하고, 대괄호 방식은 MulitValueDictKeyError 발생.
+- Django가 기본 제공하는 path converter: str, int, slug, uuid, path. (float는 없다.)
+- URL 패턴에 변수가 있으면 url 태그에도 그 인자를 넘겨야 역으로 주소를 만들 수 있다.
+- 부모 base.html에는 {% block content %}{% endblock %}만 있다. 자식이 {% block main %}...{% endblock %}으로 작성하면? 부모에게 main 블록이 없어서 자식의 내용이 화면에 나오지 않음 
+
+
+- null=DB에 NULL 허용, blank=form에서 빈 값 허용. 기본값은 둘 다 False이고 서로 대체할 수 없다.
+- auto_now_add = True (created_at에 사용). updated_at에는 auto_now=True에 사용.
+- python manage.py sqlmigrate articles 0001의 역할은? sqlmigrate는 migration이 어떤 SQL로 변환되는지 출력해서 보여줄 뿐 실행하지 않는다.
+- Article 모델을 Admin 사이트에 표시하기 위한 admin.py 코드는? from .models import Article 후 admin.site.register(Article).
+- one-off(일회성) 기본값은 기존 행을 채우기 위한 것. 이미 있던 행들을 채우는 데만 한 번 씀 
+- python manage.py showmigrations 결과에서 [ ] 0002_article_created_at...의 의미는? 아직 DB에 적용되지 않았다. [X]는 적용됨, [ ]는 파일은 있지만 미적용. migrate를 실행하면 [X]가 된다.
+- accounts 앱에 class Profile(models.Model)을 만들고 migrate했다. 생성되는 테이블 이름은? accounts_profile.
+
+
+- get()은 QuerySet이 아니라 모델 인스턴스 하나를 반환한다.
+- 쿼리셋은 0개 이상의 데이터를 담을 수 있음. 객체 목록. for문으로 순회 가능.
+- save()를 호출하지 않았으므로 DB에는 아직 아무것도 없다. -> Article.objects.all()를 하면 <QuerySet []>
+- 아직 저장하지 않은 새 Article 인스턴스의 article.pk 값은? pk는 save() 이후에 배정된다. 그래서 출력도 Article object (None).
+- pk=100인 글이 없을 때 Article.objects.get(pk=100)의 결과는? DoseNotExist 예외. get()은 결과가 0개면 DoesNotExist, 2개 이상이면 MultipleObjectsReturned. get()은 딱 하나일 때만 성공한다. 여러 개를 원하면 filter().
+-조건에 맞는 데이터가 하나도 없을 때 Article.objects.filter(title='abc')의 결과는? <QuerySET []>  filter()는 결과가 없어도 예외 없이 빈 QuerySet을 반환한다.
+- Article 1개를 삭제할 때 article.delete()의 반환값 형태는? (1, {'articles.Article':1} {(삭제된 총 개수, 모델별 삭제 개수 딕셔너리)} 튜플을 반환한다.
+- 제목에 'django'가 포함된 글을 대소문자 구분 없이 찾는 코드는? title__icontains='django')
+- Article.objects.filter(pk__gte=10)의 의미는? pk가 10 미만. gt(>), gte(>=), lt(<), lte(<=). e = equal.
+- article = Article.objects.get(pk=1) 다음에 article.objects.all()을 실행하면? AttributeError가 발생
+- result = article.save()를 실행했을 때 result의 값은? None
+- article = Article.objects.filter(pk=1) 다음에 article.title에 접근하면? AttributeError발생. filter()는 결과가 1개여도 QuerySet이다. 객체 하나가 필요하면 get() 또는 [0].
+- 기본 설정에서 article.id와 article.pk에 대한 설명으로 옳은 것은? 둘이 같은 기본키 값을 가리킴. 자동 생성 기본키 필드 이름이 id이고, pk는 "기본키"를 가리키는 별칭이다. 저장 전엔 둘 다 None.
+
+
+
+- HTML form은 GET과 POST만 지원한다. 그래서 지금은 생성·수정·삭제를 모두 POST로 처리한다(PUT·DELETE는 REST API에서).
+- 게시글 저장 후 render 대신 redirect를 쓰는 이유로 가장 적절한 것은? 완료 화면에서 새로고침했을 때 같은 POST가 다시 전송되는 것을 막기 위해. 저장 후 GET 페이지로 보내면(PRG 패턴) 새로고침해도 GET만 다시 간다. 중복 게시물 방지.
+- 게시글 작성 후 개발자 도구 Network 탭에 보이는 요청 순서로 옳은 것은? [POST] create → 302 redirect → [GET] 새 글 상세 → 200.
+- delete view에 if request.method == 'POST':로 POST일 때만 삭제하도록 한다. 그렇지 않으면 주소창에 URL을 직접 입력(GET)해도 삭제됨.
+- form은 method="POST"인데 create view에서 title = request.GET.get('title')로 꺼냈다. title의 값은? None. POST 데이터는 request.POST에 있다. request.GET에는 해당 키가 없으니 get()은 None. 그대로 저장하면 NOT NULL 제약 에러로 이어질 수 있다.
+- Update 기능의 edit와 update view 역할로 옳은 것은? edit은 기존 값이 채워진 페이지를 보여주고, updates는 DB 수정
+- POST 결과를 render로 보여준 페이지에서 새로고침하면 같은 POST가 재전송되어 글이 중복 생성될 수 있다. 그래서 저장 후에는 redirect(POST-Redirect-GET).
+
+
+- 일반 Form에는 save()가 없다. DB 저장은 모델과 연결된 ModelForm의 기능이다.
+- Form을 템플릿에 적용했는데 create view를 고치지 않아도 글 작성이 되던 이유는? Form이 만든 input의 name이 기존 POST 키와 같아서. 이 단계의 Form은 "HTML 대신 써주기"만 한다. 서버 검증은 is_valid()부터 시작된다.
+- ModelForm의 class Meta는 클래스 안에 클래스가 있지만 상속 관계가 아니다. Meta는 설정 값을 적는 곳일 뿐.
+- ModelForm create view에서 유효성 검사에 실패했을 때 올바른 처리는? 에러가 담긴 기존 form 객체를 그대로 render한다.
+- commit=False를 쓰는 대표적인 상황은? 폼에 없는 필드(예: 작성자)를 코드로 채워 저장할 때. 예: article.user = request.user 후 article.save().
+- 수정 페이지(GET)에서 기존 값이 채워진 폼을 만드는 코드는? ArticleForm(instance=article). instance로 수정 대상을 넘기면 기존 값이 채워진다. 손으로 value를 넣던 작업을 대신해 준다.
+- 수정 처리(POST)에서 instance=article을 빠뜨리고 ArticleForm(request.POST)로 저장하면? 기존 글은 그대로이고 새 글이 생긴다. save()는 instance가 없으면 생성(INSERT), 있으면 수정(UPDATE).
+- Form 렌더링 옵션에 대한 설명. {{ form.as_p }}는 각 필드를 <p>태그로 감싸서 출력.
+-입력창에 placeholder나 class 같은 HTML 속성을 지정하는 곳은? widget의 attrs
+- 통합 update view에서 GET 요청일 때 form = ArticleForm()으로 instance 없이 만들면? 빈 폼이 나와 기존 내용이 보이지 않음. 수정 페이지는 GET에서도 ArticleForm(instance=article)이어야 기존 값이 채워진다.
+- as_table은 <tr>만, as_ul은 <li>만 출력한다. 바깥 table·ul 태그는 직접 쓴다.
+
+https://claude.ai/artifact/TenZ4Cw6CFm3hhEbGEgbeb
+
+
+
+
+
+
+
+
+ArticleForm(request.POST) : 모델폼
+CustomUserChangeForm(request.POST, instance=request.user) : 모델폼
+AuthenticationForm(request, request.POST) :폼
+passwordChangeForm(request.user, request.POST) : 폼
+
+passwordChangeForm()은 모델폼이 아니라 form
+보통 form은 첫 번째 인자로 request를 받는데 passwordChangeForm()는 예외로 데이터를 먼저 받음
+기존 비번, 새 비번, 일치 여부 3가지를 받음
+
+비밀번호를 바꾼 나 자신의 세션만 새 도장으로 업데이트해 주면 돼.
+그 함수가 update_session_auth_hash(request, user)
+
+
+
+암호화 -> 해시
+SHA-256
+레인보우 테이블 공격
+솔트
+무차별 대입 공격(브루트-포스 공격)
+키 스트레칭 
