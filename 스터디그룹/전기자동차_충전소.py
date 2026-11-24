@@ -3,84 +3,85 @@ sys.stdin = open("전기자동차_충전소2.txt")
 
 T = int(input())
 for test_case in range(1, T + 1):
+    # N은 집의 개수
     N = int(input())
-    homes = []          # 각 집의 [x, y, d]
-    home_pos = set()    # 집 좌표 (x, y)
+
+    # 각 집의 x, y 좌표와 허용 거리 d를 담을 리스트 
+    homes = [] # [x, y, d]
+    # 각 집의 x, y 좌표를 담을 세트
+    home_pos = set() #(x, y)
     for _ in range(N):
         x, y, d = map(int, input().split())
         homes.append([x, y, d])
         home_pos.add((x, y))
 
-    INF = float('inf')
-    min_dist = INF
-    candidates = []     # 후보 칸마다 [각 집까지의 거리] 리스트
+    min_dist = float('inf') # 최소 거리 합은 무한대로 시작
+    # candidate는 충전소에서 집까지의 거리 집합을 모으는 리스트. 충전소가 2개일 때를 위해 준비.
+    candidates = [] # N이 3일 때 [[d1, d2, d3], [d4, d5, d6] ...]
 
-    # 경우 1) 충전소 1개
+    # 경우 1) 충전소 1개가 1개
+    # x, y 좌표의 범위는 -15 ~ 15
+    # 충전소의 좌표 (i, y)
     for i in range(-15, 16):
         for j in range(-15, 16):
+            # 집이 지어진 위치에는 충전소를 못 지으니까 스킵
             if (i, j) in home_pos:
                 continue
 
-            dists = []
-            total = 0
-            ok = 0      # 허용 거리 안에 있는 집 개수
+            total_dist = 0 # 거리 총합
+            ok = 0 # 허용 범위 안에 있는 집의 개수. ok == N 이면 성공
+            dists = [] # 충전소에서 집까지의 거리를 모은 리스트
+
+            # 충전소에서 집까지의 거리 계산하기 
             for x, y, d in homes:
                 dist = abs(i - x) + abs(j - y)
-                dists.append(dist)
-                if dist <= d:
-                    total += dist
+                dists.append(dist) 
+                if dist <= d: # 거리가 허용 범위 내라면
+                    total_dist += dist
                     ok += 1
 
-            if ok > 0:
-                candidates.append(dists)
-            if ok == N:
-                min_dist = min(min_dist, total)
+            if ok > 0: # 허용 범위 안에 있는 집이 1개라도 있다면
+                candidates.append(dists) # 후보군 candidates 리스트에 dists 리스트 추가
 
-    # 경우 2) 충전소 2개 (1개로 안 될 때만)
-    if min_dist == INF:
-        # 허용 거리가 가장 작은 집 번호
+            if ok == N: # ok가 집의 개수 N과 같으면 성공
+                min_dist = min(min_dist, total_dist)
+
+    # 경우 2) 충전소가 1개로 부족하니 2개라고 가정
+    if min_dist == float('inf'):
+        # 허용 거리가 가장 작은 집 번호 찾기
         t = 0
         for n in range(N):
             if homes[n][2] < homes[t][2]:
                 t = n
 
-        for A in candidates:
-            if A[t] > homes[t][2]:      # 첫 번째 충전소는 t번 집을 담당해야 함
+        for charge1 in candidates:
+            # 첫 번째 충전소는 t번 집을 담당해야 함. 
+            if charge1[t] > homes[t][2]: # 첫 번째 충전소가 t번 집을 충전 못하면 스킵
                 continue
-            for B in candidates:
-                total = 0
-                ok = 0
+            for charge2 in candidates:
+                # 초기화하고 시작
+                total_dist = 0 
+                ok = 0 
+
                 for n in range(N):
-                    dist = min(A[n], B[n])
-                    if dist > homes[n][2] or total + dist >= min_dist:
-                        break           # 실패 or 가지치기
-                    total += dist
+                    # 두 충전소 중에 가까운 충전소의 거리를 선택
+                    dist = min(charge1[n], charge2[n])
+
+                    # 실패한 경우거나 가지 치기 대상이면 스킵
+                    if dist > homes[n][2] or total_dist + dist >= min_dist:
+                        break # for n
+
+                    total_dist += dist
                     ok += 1
-                if ok == N:             # 끝까지 왔으면 total < min_dist 보장
-                    min_dist = total
 
-    if min_dist == INF:
+                if ok == N: # ok가 집의 개수면 성공
+                    min_dist = total_dist
+
+    # 충전소 2개로도 안 되면 -1을 출력
+    if min_dist == float('inf'):
         min_dist = -1
+
     print(f'#{test_case} {min_dist}')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -309,88 +310,88 @@ for test_case in range(1, T + 1):
 
 
 
-
-
-
-
-
-
-
-
-#### 시간 복잡도를 고려하지 않은 코드 ###
+# ### 시간 복잡도를 고려하지 않은 코드 ###
+# ### 삭제 예정
 # import sys
-# sys.stdin = open("전기자동차_충전소.txt")
+# sys.stdin = open("전기자동차_충전소1.txt")
 # T = int(input())
 # for test_case in range (1, T+1):
 #     # N은 집의 개수
 #     N = int(input())
-#     # 각 집의 위치 x,y,d(충전소까지 허용 가능한 거리)
+#     # 각 집의 x,y,d(충전소까지 허용 가능한 거리)
 #     input_maps = [list(map(int, input().split())) for _ in range(N)]
 
-#     home_locations = []
+#     # 각 집의 x,y 
+#     home_position = []
 #     for i in range(N):
-#         home_locations.append([input_maps[i][0], input_maps[i][1]])
+#         home_position.append([input_maps[i][0], input_maps[i][1]])
 
 #     # 완전 탐색
 #     min_dist = float('inf')
-#     charge_candidates = []
+#     charge_candidates = [] # 충전소를 지을 수 있는 위치 후보군
 
-#     # 맵은 x,y 좌표가 -15 ~ 15
+#     # x, y 범위는 -15 ~ 15
 #     # 충전소 좌표는 (i, j)
-#     # 충전소는 1개라고 가정 
+#     # 경우1) 충전소는 1개라고 가정 
 #     for i in range(-15, 16):
 #         for j in range(-15, 16):
 #             total_dist = 0
-#             charge_number = 0 # 충전 횟수. 충전 횟수와 집의 개수 N이 같아야 충전소 1개로 충분.
+#             ok = 0 # 충전 가능한 집 개수. 집의 개수 N과 같아야 성공.
 
-#             # 집 위치엔 충전소를 못 짓는다
-#             if [i, j] in home_locations:
+#             # 집이 있는 위치엔 충전소를 못 지으니까 스킵
+#             if [i, j] in home_position:
 #                 continue
-#             # 충전소를 둘 수 있는 후보군
-#             else:
-#                 charge_candidates.append([i, j])
 
-#             # 충전소와 집의 거리 계산해보자
+#             else:
+#                 charge_candidates.append([i, j]) # 충전소 위치 후보군에 i, j 추가
+
+#             # 충전소와 집의 거리 계산
 #             for n in range(N):
 #                 dist = abs(i - input_maps[n][0]) + abs(j - input_maps[n][1])
+#                 # dist가 각 집의 허용 거리 d 이하라면 성공
 #                 if dist <= input_maps[n][2]:
 #                     total_dist += dist
-#                     charge_number += 1
-                    
+#                     ok += 1
+
+#                 # 아니라면 중지
 #                 else:
 #                     break # for n
 
-#             # 충전기 1개로 모든 집에 접근 가능하다면
-#             if charge_number == N:
-#                 if total_dist < min_dist:
-#                     min_dist = total_dist
+#             # ok의 값이 집의 개수 N과 같다면 조건 만족
+#             if ok == N:
+#                 # 최소 거리합 경신
+#                 min_dist = min(total_dist, min_dist)
 
-#     # 충전기 1개로 부족하다면 충전기 2개로 두기
-#     # 충전소를 둘 수 있는 후보군 charge_candidates에서 2개를 골라 거리 계산
+#     # 경우2) 충전기 2개로
 #     if min_dist == float('inf'):
+#         # 충전소를 둘 수 있는 위치 후보군 charge_candidates에서 2개를 골라 거리 계산
 #         for k in charge_candidates:
 #             for l in charge_candidates: 
-#                 total_dist = 0 # 거리 리셋
-#                 charge_number = 0 # 충전 횟수도 리셋
+#                 total_dist = 0 # 거리 합계 리셋
+#                 ok = 0 # 충전 가능한 집 개수도 리셋
 
-#                 # 충전소와 집까지의 거리
+#                 # 충전소와 집까지의 거리 계산
 #                 for n in range(N):
 #                     dist1 = abs(k[0] - input_maps[n][0]) + abs(k[1] - input_maps[n][1])
 #                     dist2 = abs(l[0] - input_maps[n][0]) + abs(l[1] - input_maps[n][1])
+#                     # 더 짧은 거리를 선택
 #                     dist = min(dist1, dist2)
 
-#                     # 충전소까지의 허용 거리 내에 있다면
+#                     # dist가 허용 거리 d 이하라면 성공
 #                     if dist <= input_maps[n][2]:
 #                         total_dist += dist
-#                         charge_number += 1
+#                         ok += 1
 
+#                     # 아니면 스킵
 #                     else:
 #                         break # for n
-#                 if charge_number == N:
-#                     if total_dist < min_dist:
-#                         min_dist = total_dist
 
-#     # 만약 모든 충전소 2개로도 모든 집을 돌 수 없다면 -1을 출력
+#                 # ok == N 이면 조건 만족
+#                 if ok == N:
+#                     # 최소 거리합 경신
+#                     min_dist = min(total_dist, min_dist) 
+
+#     # 만약 모든 충전소 2개로도 모든 집을 충전할 수 없다면 -1을 출력
 #     if min_dist == float('inf'):
 #         min_dist = -1
 
