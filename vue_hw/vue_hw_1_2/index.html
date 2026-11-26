@@ -1,0 +1,22 @@
+<div id="app">
+  <h1 id="name">제 이름은 {{ name }} 입니다.</h1>
+  <p>저는 {{ age }} 살 입니다.</p>
+  <p>연락처 : {{ phone }} </p>
+</div>
+
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+<script>
+  const { createApp, ref } = Vue
+
+  const app = createApp({
+    setup() {
+      const name = ref('홍길동')
+      const age = ref(30)
+      const phone = ref('010-1234-1234')
+
+      return { name, age, phone }
+    }
+  })
+
+  app.mount('#app')
+</script>
